@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { supabase } from "../../supabaseClient";
 import { fmtUSD, fmt } from "../../Utils/formatters";
-import PortfolioView from "../portfolio/PortfolioView";
+import PortfolioView from "../Portfolio/PortfolioView";
 
 export const DesktopLayout = ({
   activeNav,
