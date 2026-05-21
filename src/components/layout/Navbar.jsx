@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const CustomGlobe = ({ className = "w-5 h-5" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" className={className} fill="currentColor">
@@ -10,11 +10,19 @@ const CustomGlobe = ({ className = "w-5 h-5" }) => (
 export default function Navbar({ authOnly = false }) {
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navbarRef = useRef(null);
+  const [navHeight, setNavHeight] = useState(0);
+
+  useEffect(() => {
+    if (navbarRef.current) {
+      setNavHeight(navbarRef.current.offsetHeight);
+    }
+  }, [mobileOpen]);
 
   return (
-    <div className="fixed top-0 left-0 w-full z-50">
+    <div className="fixed top-0 left-0 w-full z-50" ref={navbarRef}>
 
-      {/* ANNOUNCEMENT BAR — hide on auth pages */}
+      {/* ANNOUNCEMENT BAR */}
       {!authOnly && (
         <div className="relative w-full overflow-hidden bg-[var(--color-primary)] border-b border-[var(--color-border)]">
           <div className="absolute inset-0">
@@ -39,7 +47,7 @@ export default function Navbar({ authOnly = false }) {
       <header className="bg-[var(--color-bg)] backdrop-blur-md text-[var(--color-text)] border-b border-[var(--color-border)] shadow-sm">
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16">
 
-          {/* LOGO — always visible */}
+          {/* LOGO */}
           <Link to="/" className="flex items-center gap-2">
             <img src="/IMG_1544-removebg-preview.png" alt="NorthbridgeTr logo" className="w-12 h-12 object-contain" />
             <span className="text-xl font-semibold tracking-tight text-[var(--color-text)]">
@@ -47,33 +55,26 @@ export default function Navbar({ authOnly = false }) {
             </span>
           </Link>
 
-          {/* DESKTOP NAV — hide on auth pages */}
+          {/* DESKTOP NAV */}
           {!authOnly && (
             <>
               <nav className="hidden lg:flex items-center gap-10 text-[15px]">
-                <div onMouseEnter={() => setOpenMenu("mission")} onMouseLeave={() => setOpenMenu(null)} className="relative">
-                  <div className="cursor-pointer flex items-center gap-1 font-medium text-[var(--color-text)] hover:text-[var(--color-muted)] transition">
-                    <span>What We Offer</span>
-                    <svg className="w-3 h-3 transition-transform" style={{ transform: openMenu === "mission" ? "rotate(180deg)" : "rotate(0deg)" }} fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
+                {[
+                  { label: "Trade & Invest", key: "mission" },
+                  { label: "Why Northbridge", key: "services" },
+                  { label: "Learn", key: "learn" },
+                  { label: "Company", key: "company" },
+                  { label: "Help", key: "help" },
+                ].map(({ label, key }) => (
+                  <div key={key} onMouseEnter={() => setOpenMenu(key)} onMouseLeave={() => setOpenMenu(null)} className="relative">
+                    <div className="cursor-pointer flex items-center gap-1 font-medium text-[var(--color-text)] hover:text-[var(--color-muted)] transition">
+                      <span>{label}</span>
+                      <svg className="w-3 h-3 transition-transform" style={{ transform: openMenu === key ? "rotate(180deg)" : "rotate(0deg)" }} fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
                   </div>
-                </div>
-
-                <div onMouseEnter={() => setOpenMenu("services")} onMouseLeave={() => setOpenMenu(null)} className="relative">
-                  <div className="cursor-pointer flex items-center gap-1 font-medium text-[var(--color-text)] hover:text-[var(--color-muted)] transition">
-                    <span>Crypto</span>
-                    <svg className="w-3 h-3 transition-transform" style={{ transform: openMenu === "services" ? "rotate(180deg)" : "rotate(0deg)" }} fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-
-                <Link className="font-medium text-[var(--color-text)] hover:text-[var(--color-muted)] transition" to="/projects">Predict</Link>
-                <Link className="font-medium text-[var(--color-text)] hover:text-[var(--color-muted)] transition" to="/testimonials">Strategies</Link>
-                <Link className="font-medium text-[var(--color-text)] hover:text-[var(--color-muted)] transition" to="/contact">Gold</Link>
-                <Link className="font-medium text-[var(--color-text)] hover:text-[var(--color-muted)] transition" to="/emag">Legend</Link>
-                <Link className="font-medium text-[var(--color-text)] hover:text-[var(--color-muted)] transition" to="/emag">Support</Link>
+                ))}
               </nav>
 
               <div className="hidden lg:flex items-center gap-3 pl-4 border-l border-[var(--color-border)]">
@@ -83,35 +84,82 @@ export default function Navbar({ authOnly = false }) {
                 <Link to="/signin" className="px-4 py-2 text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-hover)] rounded-full transition">
                   Sign in
                 </Link>
-                <Link to="/dashboard" className="px-4 py-2 text-sm font-semibold bg-[var(--color-primary)] text-black border border-[var(--color-border)] hover:opacity-90 rounded-full transition">
+                <Link to="/SignUp" className="px-4 py-2 text-sm font-semibold bg-[var(--color-primary)] text-black border border-[var(--color-border)] hover:opacity-90 rounded-full transition">
                   Get Started
                 </Link>
               </div>
 
               {/* MOBILE BUTTON */}
-              <button className="lg:hidden flex items-center justify-center h-10 w-10" onClick={() => setMobileOpen(!mobileOpen)}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="40" y1="64" x2="216" y2="64" />
-                  <line x1="40" y1="128" x2="216" y2="128" />
-                  <line x1="40" y1="192" x2="216" y2="192" />
-                </svg>
-              </button>
+              <div className="lg:hidden flex items-center gap-3">
+                <Link to="/signin" className="px-4 py-2 text-sm font-semibold bg-[var(--color-primary)] text-black border border-[var(--color-border)] hover:opacity-90 rounded-full transition">
+                  Sign In
+                </Link>
+                <button className="flex items-center justify-center h-10 w-10" onClick={() => setMobileOpen(!mobileOpen)}>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="40" y1="64" x2="216" y2="64" />
+                    <line x1="40" y1="128" x2="216" y2="128" />
+                    <line x1="40" y1="192" x2="216" y2="192" />
+                  </svg>
+                </button>
+              </div>
             </>
           )}
 
         </div>
-
-        {/* MOBILE MENU */}
-        {!authOnly && mobileOpen && (
-          <div className="lg:hidden bg-[var(--color-bg)] border-t border-[var(--color-border)] p-6 space-y-5">
-            <Link to="/projects" className="block font-medium">Our Projects</Link>
-            <Link to="/testimonials" className="block font-medium">Testimonials</Link>
-            <Link to="/contact" className="block font-medium">Contact</Link>
-            <Link to="/emag" className="block font-medium">eMAG</Link>
-          </div>
-        )}
-
       </header>
+
+      {/* MOBILE MENU — outside header, uses measured navHeight */}
+{!authOnly && mobileOpen && (
+  <>
+    <style>{`body { overflow: hidden; }`}</style>
+    <div
+      className="lg:hidden fixed left-0 right-0 bottom-0 flex flex-col"
+      style={{ top: navHeight, backgroundColor: 'var(--background)', zIndex: 9999 }}
+    >
+      {/* Scrollable nav links */}
+      <div className="flex-1 overflow-y-auto">
+        {[
+          { label: "Trade & Invest", to: "/trade" },
+          { label: "Why Northbridge", to: "/why" },
+          { label: "Learn", to: "/learn" },
+          { label: "Company", to: "/company" },
+          { label: "Help", to: "/help" },
+        ].map(({ label, to }) => (
+          <Link
+            key={label}
+            to={to}
+            onClick={() => setMobileOpen(false)}
+            className="flex items-center justify-between px-6 py-5 border-b border-[var(--border)] font-medium text-[var(--foreground)] hover:bg-[var(--muted)] transition"
+          >
+            {label}
+            <svg className="w-4 h-4 opacity-50" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        ))}
+      </div>
+
+      {/* Bottom buttons */}
+      <div className="p-6 space-y-3 border-t border-[var(--border)]" style={{ backgroundColor: 'var(--background)' }}>
+        <Link
+          to="/SignUp"
+          onClick={() => setMobileOpen(false)}
+          className="block w-full text-center px-4 py-3 text-sm font-semibold bg-[var(--color-primary)] text-black rounded-full hover:opacity-90 transition"
+        >
+          Get Started
+        </Link>
+        <Link
+          to="/signin"
+          onClick={() => setMobileOpen(false)}
+          className="block w-full text-center px-4 py-3 text-sm font-medium border border-[var(--border)] text-[var(--foreground)] rounded-full hover:bg-[var(--muted)] transition"
+        >
+          Sign In
+        </Link>
+      </div>
+    </div>
+  </>
+)}
+
     </div>
   );
 }

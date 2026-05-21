@@ -18,10 +18,10 @@ const container = {
 
 export default function CryptoSection() {
   return (
-    <section 
+    <section
       className="w-full min-h-screen flex items-center bg-[#dde3e9]"
       style={{
-        backgroundImage: "url('/IMG_1566.JPG')",   // ← Put your image path here
+        backgroundImage: "url('/IMG_1566.JPG')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -92,39 +92,28 @@ export default function CryptoSection() {
 
         </div>
 
-        {/* RIGHT: CRYPTO TICKER CARDS */}
+        {/* RIGHT: VIDEO */}
         <motion.div
           variants={item}
-          className="w-full md:w-1/2 flex flex-col gap-3"
+          className="relative w-full md:w-1/2 flex justify-center"
         >
-          {[
-            { name: "Bitcoin", ticker: "BTC", change: "+2.4%", price: "$62,340", up: true },
-            { name: "Ethereum", ticker: "ETH", change: "+1.1%", price: "$3,210", up: true },
-            { name: "Solana", ticker: "SOL", change: "-0.8%", price: "$142.50", up: false },
-            { name: "Dogecoin", ticker: "DOGE", change: "+5.2%", price: "$0.182", up: true },
-            { name: "XRP", ticker: "XRP", change: "-1.3%", price: "$0.524", up: false },
-          ].map((coin) => (
-            <div
-              key={coin.ticker}
-              className="flex items-center justify-between px-5 py-4 rounded-xl bg-white/60 backdrop-blur-sm border border-white/80 hover:bg-white transition-all duration-200"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#1E4A7C]/10 flex items-center justify-center text-[13px] font-bold text-[#1E4A7C]">
-                  {coin.ticker[0]}
-                </div>
-                <div>
-                  <p className="text-[14px] font-semibold text-[#111]">{coin.name}</p>
-                  <p className="text-[12px] text-[#888]">{coin.ticker}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-[14px] font-semibold text-[#111]">{coin.price}</p>
-                <p className={`text-[12px] font-medium ${coin.up ? "text-green-500" : "text-red-400"}`}>
-                  {coin.change}
-                </p>
-              </div>
-            </div>
-          ))}
+
+          {/* Glow */}
+          <div className="absolute inset-0 bg-[#1E4A7C]/20 blur-[80px] rounded-full scale-75" />
+
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="relative z-10 w-[620px] max-w-full rounded-[28px] object-cover shadow-[0_40px_80px_rgba(0,0,0,0.35)]"
+            style={{
+              transform: "perspective(1200px) rotateY(-8deg)",
+            }}
+          >
+            <source src="/d07073c6d12411de05d2cd6587111d4a_720w.mp4" type="video/mp4" />
+          </video>
+
         </motion.div>
 
       </motion.div>

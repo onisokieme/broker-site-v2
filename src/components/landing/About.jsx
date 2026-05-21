@@ -27,29 +27,36 @@ export default function TradingSection() {
         className="max-w-[1200px] w-full px-6 xl:px-[84px] flex flex-col md:flex-row items-center justify-between gap-16 py-24"
       >
 
-        {/* LEFT: IMAGE */}
+        {/* LEFT: VIDEO */}
         <motion.div
           variants={item}
           className="relative w-full md:w-1/2 flex justify-center"
         >
+          {/* Glow */}
           <div className="absolute inset-0 bg-[#1E4A7C]/30 blur-[80px] rounded-full scale-75" />
-          <img
-            src="/jakub-zerdzicki-h_H1KtjNOAk-unsplash.jpg"
-            alt="Trading dashboard"
-            className="relative z- w-[620px] max-w-full rounded-one shadow-[0_40px_80px_rgba(0,0,0,0.7)]"
+
+          {/* Video */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="relative z-10 w-[620px] max-w-full rounded-[28px] shadow-[0_40px_80px_rgba(0,0,0,0.7)] object-cover"
             style={{
               transform: "perspective(1200px) rotateY(8deg)",
             }}
-          />
+          >
+            <source src="/53cac377aedb5e934793273c88ca268d.mp4" type="video/mp4" />
+          </video>
         </motion.div>
 
         {/* RIGHT: CONTENT */}
         <div className="w-full md:w-1/2 text-white">
 
-          {/* EYEBROW — yellow like Robinhood's green accent */}
+          {/* EYEBROW */}
           <motion.p
             variants={item}
-            className="text- text-[15px] font-semibold mb-4"
+            className="text-[15px] font-semibold mb-4 text-white/80"
           >
             Intuitive trading tools
           </motion.p>

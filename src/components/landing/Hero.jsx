@@ -77,7 +77,7 @@ export default function Hero() {
           <motion.h1
             variants={item}
             className="
-              text-[clamp(36px,9vw,120px)]
+              text-[clamp(36px,9vw,140px)]
               leading-[1.0]
               tracking-[-2px]
               text-white
@@ -104,7 +104,7 @@ export default function Hero() {
               max-w-[560px]
             "
           >
-            Manage your portfolio on Robinhood: stocks, ETFs, crypto, options, futures, and prediction markets. Get started with as little as $1.
+            Manage your portfolio on Northbridge: stocks, ETFs, crypto, options, futures, and prediction markets. Get started with as little as $1.
           </motion.p>
 
           {/* CTA */}
